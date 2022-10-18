@@ -15,6 +15,28 @@ module decomp_2d_types
 
   private
 
+#ifdef SHM
+  ! derived type to store shared-memory info
+  TYPE, public :: SMP_INFO
+     integer MPI_COMM          ! SMP associated with this communicator
+     integer NODE_ME           ! rank in this communicator
+     integer NCPU              ! size of this communicator
+     integer SMP_COMM          ! communicator for SMP-node masters
+     integer CORE_COMM         ! communicator for cores on SMP-node
+     integer SMP_ME            ! SMP-node id starting from 1 ... NSMP
+     integer NSMP              ! number of SMP-nodes in this communicator
+     integer CORE_ME           ! core id starting from 1 ... NCORE
+     integer NCORE             ! number of cores on this SMP-node
+     integer MAXCORE           ! maximum no. cores on any SMP-node
+     integer N_SND             ! size of SMP shared memory buffer
+     integer N_RCV             ! size of SMP shared memory buffer
+     integer(8) SND_P          ! SNDBUF address (cray pointer), for real 
+     integer(8) RCV_P          ! RCVBUF address (cray pointer), for real
+     integer(8) SND_P_c        ! for complex
+     integer(8) RCV_P_c        ! for complex
+  END TYPE SMP_INFO
+#endif
+
   ! derived type to store decomposition info for a given global data size
   TYPE, public :: DECOMP_INFO
      ! staring/ending index and size of data held by current processor
