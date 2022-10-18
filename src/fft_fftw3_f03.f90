@@ -13,7 +13,8 @@
 ! the Fortran 2003 interface introduced in FFTW 3.3-beta1
 
 module decomp_2d_fft
-  
+
+  use decomp2d_kinds, only : mytype
   use decomp_2d  ! 2D decomposition module
   use, intrinsic :: iso_c_binding
   

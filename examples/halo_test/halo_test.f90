@@ -8,6 +8,7 @@ program halo_test
 
   use mpi
 
+  use decomp2d_kinds, only : mytype, real_type
   use decomp_2d
 
   implicit none
