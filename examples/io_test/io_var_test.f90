@@ -4,6 +4,7 @@
 program io_var_test
 
   use decomp_2d_kinds, only : mytype
+  use decomp_2d_types, only : decomp_info
   use decomp_2d
   use decomp_2d_io
   use MPI

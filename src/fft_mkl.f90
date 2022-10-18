@@ -14,6 +14,7 @@
 module decomp_2d_fft
 
   use decomp_2d_kinds, only : mytype
+  use decomp_2d_types, only : decomp_info
   use decomp_2d  ! 2D decomposition module
   use MKL_DFTI   ! MKL FFT module
 

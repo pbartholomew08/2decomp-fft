@@ -23,6 +23,7 @@ module decomp_2d
 #endif
 
   use decomp_2d_kinds
+  use decomp_2d_types
   
   implicit none
 
@@ -103,51 +104,6 @@ module decomp_2d
      integer(8) RCV_P_c        ! for complex
   END TYPE SMP_INFO
 #endif
-
-  ! derived type to store decomposition info for a given global data size
-  TYPE, public :: DECOMP_INFO
-     ! staring/ending index and size of data held by current processor
-     integer, dimension(3) :: xst, xen, xsz  ! x-pencil
-     integer, dimension(3) :: yst, yen, ysz  ! y-pencil
-     integer, dimension(3) :: zst, zen, zsz  ! z-pencil
-
-     ! in addition to local information, processors also need to know 
-     ! some global information for global communications to work 
-
-     ! how each dimension is distributed along pencils
-     integer, allocatable, dimension(:) :: &
-          x1dist, y1dist, y2dist, z2dist
-
-     ! send/receive buffer counts and displacements for MPI_ALLTOALLV
-     integer, allocatable, dimension(:) :: &
-          x1cnts, y1cnts, y2cnts, z2cnts
-     integer, allocatable, dimension(:) :: &
-          x1disp, y1disp, y2disp, z2disp
-
-     ! buffer counts for MPI_ALLTOALL: either for evenly distributed data
-     ! or for padded-alltoall
-     integer :: x1count, y1count, y2count, z2count
-
-     ! evenly distributed data
-     logical :: even
-
-#ifdef SHM
-     ! For shared-memory implementation
-
-     ! one instance of this derived type for each communicator
-     ! shared moemory info, such as which MPI rank belongs to which node
-     TYPE(SMP_INFO) :: ROW_INFO, COL_INFO
-
-     ! shared send/recv buffers for ALLTOALLV
-     integer, allocatable, dimension(:) :: x1cnts_s, y1cnts_s, &
-          y2cnts_s, z2cnts_s
-     integer, allocatable, dimension(:) :: x1disp_s, y1disp_s, &
-          y2disp_s, z2disp_s
-     ! A copy of original buffer displacement (will be overwriten)
-     integer, allocatable, dimension(:) :: x1disp_o, y1disp_o, &
-          y2disp_o, z2disp_o
-#endif
-  END TYPE DECOMP_INFO
 
   ! main (default) decomposition information for global size nx*ny*nz
   TYPE(DECOMP_INFO), target, save, public :: decomp_main
