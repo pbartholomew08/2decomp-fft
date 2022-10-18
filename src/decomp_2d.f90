@@ -22,7 +22,7 @@ module decomp_2d
 #endif
 #endif
 
-  use decomp2d_kinds
+  use decomp_2d_kinds
   
   implicit none
 

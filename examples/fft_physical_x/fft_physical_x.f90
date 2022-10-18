@@ -1,6 +1,6 @@
 program fft_physical_x
 
-  use decomp2d_kinds, only : mytype, real_type
+  use decomp_2d_kinds, only : mytype, real_type
   use decomp_2d
   use decomp_2d_fft
   use MPI

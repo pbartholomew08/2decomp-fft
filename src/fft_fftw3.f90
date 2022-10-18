@@ -13,7 +13,7 @@
 
 module decomp_2d_fft
 
-  use decomp2d_kinds, only : mytype
+  use decomp_2d_kinds, only : mytype
   use decomp_2d  ! 2D decomposition module
 
   implicit none

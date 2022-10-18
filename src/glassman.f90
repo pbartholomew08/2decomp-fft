@@ -14,7 +14,7 @@
 
 module glassman
 
-  use decomp2d_kinds, only : mytype
+  use decomp_2d_kinds, only : mytype
 
   implicit none
 

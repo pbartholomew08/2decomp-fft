@@ -2,7 +2,7 @@ program io_read
 
   use mpi
 
-  use decomp2d_kinds, only : mytype
+  use decomp_2d_kinds, only : mytype
   use decomp_2d
   use decomp_2d_io
 

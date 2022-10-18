@@ -10,7 +10,7 @@
 !!!=======================================================================
 
 !!! Defines the kinds used by 2DECOMP&FFT
-module decomp2d_kinds
+module decomp_2d_kinds
 
   use, intrinsic :: iso_fortran_env, only : real32, real64
   use MPI
@@ -40,5 +40,5 @@ module decomp2d_kinds
   integer, parameter, public :: real_type_single = MPI_REAL
 #endif
   
-end module decomp2d_kinds
+end module decomp_2d_kinds
 

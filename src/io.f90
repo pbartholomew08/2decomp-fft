@@ -15,7 +15,7 @@
 
 module decomp_2d_io
 
-  use decomp2d_kinds
+  use decomp_2d_kinds
   use decomp_2d
   use MPI
 #ifdef T3PIO
