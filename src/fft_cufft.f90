@@ -13,6 +13,8 @@
 
 module decomp_2d_fft
 
+  use iso_fortran_env
+  
   use decomp_2d  ! 2D decomposition module
   use iso_c_binding
   use cudafor
@@ -33,8 +35,8 @@ module decomp_2d_fft
   ! For r2c/c2r transforms:
   !     use plan(0,j) for r2c transforms;
   !     use plan(2,j) for c2r transforms;
-  integer*4, save :: plan(-1:2,3)
-  complex*8, device, allocatable, dimension(:) :: cufft_workspace
+  integer(kind=int32), save :: plan(-1:2,3)
+  complex(kind=real64), device, allocatable, dimension(:) :: cufft_workspace
 
   ! common code used for all engines, including global variables, 
   ! generic interface definitions and several subroutines
@@ -45,7 +47,7 @@ module decomp_2d_fft
     
     implicit none
 
-    integer*4, intent(OUT) :: plan1
+    integer(kind=int32), intent(OUT) :: plan1
     TYPE(DECOMP_INFO), intent(IN) :: decomp
     integer, intent(IN) :: cufft_type
 
@@ -71,7 +73,7 @@ module decomp_2d_fft
 
     implicit none
 
-    integer*4, intent(OUT) :: plan1
+    integer(kind=int32), intent(OUT) :: plan1
     TYPE(DECOMP_INFO), intent(IN) :: decomp
     integer, intent(IN) :: cufft_type
 
@@ -99,7 +101,7 @@ module decomp_2d_fft
 
     implicit none
 
-    integer*4, intent(OUT) :: plan1
+    integer(kind=int32), intent(OUT) :: plan1
     TYPE(DECOMP_INFO), intent(IN) :: decomp
     integer, intent(IN) :: cufft_type
 
@@ -125,7 +127,7 @@ module decomp_2d_fft
 
     implicit none
 
-    integer*4, intent(OUT) :: plan1
+    integer(kind=int32), intent(OUT) :: plan1
     TYPE(DECOMP_INFO), intent(IN) :: decomp_ph
     TYPE(DECOMP_INFO), intent(IN) :: decomp_sp
     integer, intent(IN) :: cufft_type
@@ -152,7 +154,7 @@ module decomp_2d_fft
 
     implicit none
 
-    integer*4, intent(OUT) :: plan1
+    integer(kind=int32), intent(OUT) :: plan1
     TYPE(DECOMP_INFO), intent(IN) :: decomp_ph
     TYPE(DECOMP_INFO), intent(IN) :: decomp_sp
     integer, intent(IN) :: cufft_type
@@ -179,7 +181,7 @@ module decomp_2d_fft
 
     implicit none
 
-    integer*4, intent(OUT) :: plan1
+    integer(kind=int32), intent(OUT) :: plan1
     TYPE(DECOMP_INFO), intent(IN) :: decomp_ph
     TYPE(DECOMP_INFO), intent(IN) :: decomp_sp
     integer, intent(IN) :: cufft_type
@@ -206,7 +208,7 @@ module decomp_2d_fft
 
     implicit none
 
-    integer*4, intent(OUT) :: plan1
+    integer(kind=int32), intent(OUT) :: plan1
     TYPE(DECOMP_INFO), intent(IN) :: decomp_ph
     TYPE(DECOMP_INFO), intent(IN) :: decomp_sp
     integer, intent(IN) :: cufft_type
@@ -235,7 +237,7 @@ module decomp_2d_fft
 
     implicit none
 
-    !integer*4 :: cufft_ws, ws
+    !integer(kind=int32) :: cufft_ws, ws
     integer(int_ptr_kind()) :: cufft_ws, ws
     integer   :: i, j, istat
 
@@ -409,7 +411,7 @@ module decomp_2d_fft
 
     complex(mytype), dimension(:,:,:), intent(INOUT) :: inout
     integer, intent(IN) :: isign
-    integer*4, intent(IN) :: plan1
+    integer(kind=int32), intent(IN) :: plan1
 
     complex(mytype), dimension(:,:,:), allocatable :: output
     integer :: istat
@@ -441,7 +443,7 @@ module decomp_2d_fft
 
     complex(mytype), dimension(:,:,:), intent(INOUT) :: inout
     integer, intent(IN) :: isign
-    integer*4, intent(IN) :: plan1
+    integer(kind=int32), intent(IN) :: plan1
 
     complex(mytype), dimension(:,:,:), allocatable :: output
     integer :: s3, k, istat
@@ -476,7 +478,7 @@ module decomp_2d_fft
 
     complex(mytype), dimension(:,:,:), intent(INOUT) :: inout
     integer, intent(IN) :: isign
-    integer*4, intent(IN) :: plan1
+    integer(kind=int32), intent(IN) :: plan1
     
     complex(mytype), dimension(:,:,:), allocatable :: output
     integer :: istat
