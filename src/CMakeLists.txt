@@ -1,17 +1,18 @@
-file(GLOB files_decomp factor.f90
-	               decomp_2d_constants.f90
-		       decomp_2d_mpi.f90
-	               decomp_2d.f90
-		       log.f90
-		       io.f90)
-include_directories(${CMAKE_SOURCE_DIR}/src)
+file(GLOB files_core factor.f90
+                     decomp_2d_constants.f90
+		     decomp_2d_mpi.f90
+		     decomp_2d.f90)
 
 if(${BUILD_TARGET} MATCHES "gpu")
-  list(APPEND files_decomp decomp_2d_cumpi.f90)
+  list(APPEND files_core decomp_2d_cumpi.f90)
   if(ENABLE_NCCL)
-    list(APPEND files_decomp decomp_2d_nccl.f90)
+    list(APPEND files_core decomp_2d_nccl.f90)
   endif()
 endif(${BUILD_TARGET} MATCHES "gpu")
+
+file(GLOB files_decomp log.f90
+		       io.f90)
+include_directories(${CMAKE_SOURCE_DIR}/src)
 
 if (ENABLE_PROFILER)
   file(GLOB prof_files profiler_${ENABLE_PROFILER}.f90)
@@ -22,7 +23,9 @@ add_subdirectory(fft)
 
 set(SRCFILES ${files_decomp} ${prof_files})
 
+add_library(decomp2d_core OBJECT ${files_core})
 add_library(decomp2d ${SRCFILES})
+target_link_libraries(decomp2d PUBLIC $<TARGET_OBJECTS:decomp2d_core>) # "Link" the core code
 target_link_libraries(decomp2d PUBLIC $<TARGET_OBJECTS:decomp2d_fft>) # "Link" the FFT module
 
 target_include_directories(decomp2d PUBLIC

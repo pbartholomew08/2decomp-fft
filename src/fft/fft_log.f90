@@ -30,7 +30,7 @@ contains
          write (io_unit, *) ''
          write (io_unit, *) '***** Using the '//trim(backend)//' FFT engine *****'
          write (io_unit, *) ''
-         write (io_unit, *) 'Id of the backend : ', D2D_FFT_BACKEND
+         write (io_unit, *) 'Id of the backend : ', get_fft_backend()
          if (format == PHYSICAL_IN_X) then
             write (io_unit, *) 'Format : Physical in x'
          else

@@ -2,28 +2,31 @@
 #
 # SPDX-License-Identifier: BSD-3-Clause 
 
+file(GLOB files_fft fft.f90)
+
 if(FFTW_FOUND)
   if (${FFT_Choice} MATCHES "fftw_f03")
     message (STATUS "Compiling using FFTW3 F2003 interface")
-    file(GLOB files_fft fft_fftw3_f03.f90)
+    list(APPEND files_fft fft_fftw3_f03.f90)
   else()
     message (STATUS "Compiling using FFTW3 legacy interface")
-    file(GLOB files_fft fft_fftw3.f90)
+    list(APPEND files_fft fft_fftw3.f90)
   endif()
 elseif(MKL_FOUND)
   message (STATUS "Compiling using MKL")
-  file(GLOB files_fft $ENV{MKLROOT}/include/mkl_dfti.f90 fft_mkl.f90)
+  list(APPEND files_fft $ENV{MKLROOT}/include/mkl_dfti.f90 fft_mkl.f90)
 elseif(CUFFT_FOUND)
   message (STATUS "Compiling using cuFFT")
-  file(GLOB files_fft fft_cufft.f90)
+  list(APPEND files_fft fft_cufft.f90)
 else(FFTW_FOUND)
   message (STATUS "Compiling using Generic FFT")
-  file(GLOB files_fft glassman.f90 fft_generic.f90)
+  list(APPEND files_fft fft_common_3d.f90 fft_generic.f90 glassman.f90)
 endif(FFTW_FOUND)
 list(APPEND files_fft fft_log.f90)
 
 # Build a CMake object library for the FFT module
 add_library(decomp2d_fft OBJECT ${files_fft})
+target_link_libraries(decomp2d_fft PUBLIC $<TARGET_OBJECTS:decomp2d_core>) # "Link" the core code
 
 target_include_directories(decomp2d_fft PUBLIC
   $<BUILD_INTERFACE:${CMAKE_Fortran_MODULE_DIRECTORY}>

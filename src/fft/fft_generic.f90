@@ -2,31 +2,24 @@
 
 ! This is the 'generic' implementation of the FFT library
 
-module decomp_2d_fft
+submodule(decomp_2d_fft) decomp_2d_fft_generic
 
-   use iso_c_binding, only: c_f_pointer, c_loc
-   use decomp_2d_constants
-   use decomp_2d_mpi
-   use decomp_2d  ! 2D decomposition module
    use glassman
 
    implicit none
 
-   private        ! Make everything private unless declared public
-
    ! engine-specific global variables
    complex(mytype), allocatable, dimension(:) :: buf, scratch
 
-   integer, parameter, public :: D2D_FFT_BACKEND = D2D_FFT_BACKEND_GENERIC
+contains
 
-   ! common code used for all engines, including global variables,
-   ! generic interface definitions and several subroutines
-#include "fft_common.f90"
+   ! Returns the FFT backend ID
+   module pure integer function get_fft_backend()
+      get_fft_backend = D2D_FFT_BACKEND_GENERIC
+   end function
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    !  This routine performs one-time initialisations for the FFT engine
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-   subroutine init_fft_engine
+   module subroutine init_fft_engine
 
       implicit none
 
@@ -41,10 +34,8 @@ module decomp_2d_fft
 
    end subroutine init_fft_engine
 
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
    !  This routine performs one-time finalisations for the FFT engine
-!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-   subroutine finalize_fft_engine
+   module subroutine finalize_fft_engine
 
       implicit none
 
@@ -58,7 +49,7 @@ module decomp_2d_fft
    ! the basis of three-dimensional FFTs.
 
    ! c2c transform, multiple 1D FFTs in x direction
-   subroutine c2c_1m_x(inout, isign, decomp)
+   module subroutine c2c_1m_x(inout, isign, decomp)
 
       !$acc routine(spcfft) seq
 
@@ -89,7 +80,7 @@ module decomp_2d_fft
    end subroutine c2c_1m_x
 
    ! c2c transform, multiple 1D FFTs in y direction
-   subroutine c2c_1m_y(inout, isign, decomp)
+   module subroutine c2c_1m_y(inout, isign, decomp)
 
       !$acc routine(spcfft) seq
 
@@ -120,7 +111,7 @@ module decomp_2d_fft
    end subroutine c2c_1m_y
 
    ! c2c transform, multiple 1D FFTs in z direction
-   subroutine c2c_1m_z(inout, isign, decomp)
+   module subroutine c2c_1m_z(inout, isign, decomp)
 
       !$acc routine(spcfft) seq
 
@@ -151,7 +142,7 @@ module decomp_2d_fft
    end subroutine c2c_1m_z
 
    ! r2c transform, multiple 1D FFTs in x direction
-   subroutine r2c_1m_x(input, output)
+   module subroutine r2c_1m_x(input, output)
 
       !$acc routine(spcfft) seq
 
@@ -191,7 +182,7 @@ module decomp_2d_fft
    end subroutine r2c_1m_x
 
    ! r2c transform, multiple 1D FFTs in z direction
-   subroutine r2c_1m_z(input, output)
+   module subroutine r2c_1m_z(input, output)
 
       !$acc routine(spcfft) seq
 
@@ -231,7 +222,7 @@ module decomp_2d_fft
    end subroutine r2c_1m_z
 
    ! c2r transform, multiple 1D FFTs in x direction
-   subroutine c2r_1m_x(input, output)
+   module subroutine c2r_1m_x(input, output)
 
       !$acc routine(spcfft) seq
 
@@ -278,7 +269,7 @@ module decomp_2d_fft
    end subroutine c2r_1m_x
 
    ! c2r transform, multiple 1D FFTs in z direction
-   subroutine c2r_1m_z(input, output)
+   module subroutine c2r_1m_z(input, output)
 
       !$acc routine(spcfft) seq
 
@@ -314,6 +305,4 @@ module decomp_2d_fft
 
    end subroutine c2r_1m_z
 
-#include "fft_common_3d.f90"
-
-end module decomp_2d_fft
+end submodule decomp_2d_fft_generic
